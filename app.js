@@ -1,11 +1,11 @@
 (function() {
-  var http, server;
-  http = require('http');
-  server = http.createServer(function(req, res) {
-    res.writeHead(200, {
-      'Content-Type': 'text/html'
-    });
-    return res.end('<h1>soundmapr!</h1>');
+  var app, express, port;
+  express = require('express');
+  app = express.createServer(express.logger());
+  app.get('/', function(request, response) {
+    return response.send('soundmapr!');
   });
-  server.listen(8080);
+  port = process.env.PORT || 3000;
+  console.log("Listening on " + port);
+  app.listen(port);
 }).call(this);

@@ -1,6 +1,7 @@
-http = require('http')
-
-server = http.createServer (req, res) ->
-    res.writeHead(200, {'Content-Type': 'text/html'})
-    res.end('<h1>soundmapr!</h1>')
-server.listen(8080)
+express = require('express')
+app = express.createServer(express.logger())
+app.get '/', (request, response) ->
+    response.send('soundmapr!')
+port = process.env.PORT or 3000
+console.log("Listening on #{port}")
+app.listen(port)
