@@ -5,7 +5,7 @@
   app.get('/', function(request, response) {
     return response.send('soundmapr!');
   });
-  port = 80;
+  port = process.env.PORT || 4000;
   console.log("Listening on " + port);
   app.listen(port);
 }).call(this);
