@@ -1,10 +1,14 @@
+# todo: 
+# * throttle - etag?
+# * render js out
+#
+#
 # configure, pull in what we need etc
 https = require('https')
 events = require('events')
 jade = require('jade')
 connect = require('connect')
 express = require('express')
-io = require('socket.io')
 timers = require('timers')
 app = express.createServer(
   express.logger(),
@@ -40,8 +44,11 @@ class SoundcloudContributions extends events.EventEmitter
       @check()
     @timeout = setTimeout timer, minutes * 60 * 1000
 
+group = new SoundcloudContributions('28121', 'HAVZC0bHjrDNUbkqQSbqPg')
+group.on 'change', (contributions) ->
+  console.info("now have #{contributions.length}")
 
-layout = '''
+layout_template = """
 !!! 5
 html(lang="en")
   head
@@ -50,18 +57,15 @@ html(lang="en")
     script(src='/socket.io.js')
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js')
     script(src='http://maps.google.com/maps/api/js?sensor=false')
+    script(type='text/javascript')
+      var contributions = !{JSON.stringify(group.contributions)}
     script(src='/client.js')
   body(onunload='GUnload()')
     #map
-'''
+"""
+layout = jade.compile(layout_template)
+
 
 app.get '/', (request, response) ->
-  response.send(jade.render(layout))
+  response.send(layout.call(this, {group}))
 app.listen(port)
-
-group = new SoundcloudContributions('28121', 'HAVZC0bHjrDNUbkqQSbqPg')
-sockets = io.listen(app)
-sockets.on 'connection', (socket) ->
-  socket.send(JSON.stringify(group.contributions))
-group.on 'change', (contributions) ->
-  sockets.broadcast(JSON.stringify(group.contributions))

@@ -1,5 +1,5 @@
 (function() {
-  var SoundcloudContributions, app, connect, events, express, group, https, io, jade, layout, port, sockets, timers;
+  var SoundcloudContributions, app, connect, events, express, group, https, jade, layout, layout_template, port, timers;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -13,7 +13,6 @@
   jade = require('jade');
   connect = require('connect');
   express = require('express');
-  io = require('socket.io');
   timers = require('timers');
   app = express.createServer(express.logger(), connect.static("" + __dirname + "/public"));
   app.set('view engine', 'jade');
@@ -65,17 +64,16 @@
     };
     return SoundcloudContributions;
   })();
-  layout = '!!! 5\nhtml(lang="en")\n  head\n    title soundmapr\n    link(rel=\'stylesheet\', href=\'/style.css\')\n    script(src=\'/socket.io.js\')\n    script(src=\'http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js\')\n    script(src=\'http://maps.google.com/maps/api/js?sensor=false\')\n    script(src=\'/client.js\')\n  body(onunload=\'GUnload()\')\n    #map';
+  group = new SoundcloudContributions('28121', 'HAVZC0bHjrDNUbkqQSbqPg');
+  group.on('change', function(contributions) {
+    return console.info("now have " + contributions.length);
+  });
+  layout_template = "!!! 5\nhtml(lang=\"en\")\n  head\n    title soundmapr\n    link(rel='stylesheet', href='/style.css')\n    script(src='/socket.io.js')\n    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js')\n    script(src='http://maps.google.com/maps/api/js?sensor=false')\n    script(type='text/javascript')\n      var contributions = !{JSON.stringify(group.contributions)}\n    script(src='/client.js')\n  body(onunload='GUnload()')\n    #map";
+  layout = jade.compile(layout_template);
   app.get('/', function(request, response) {
-    return response.send(jade.render(layout));
+    return response.send(layout.call(this, {
+      group: group
+    }));
   });
   app.listen(port);
-  group = new SoundcloudContributions('28121', 'HAVZC0bHjrDNUbkqQSbqPg');
-  sockets = io.listen(app);
-  sockets.on('connection', function(socket) {
-    return socket.send(JSON.stringify(group.contributions));
-  });
-  group.on('change', function(contributions) {
-    return sockets.broadcast(JSON.stringify(group.contributions));
-  });
 }).call(this);
