@@ -64,7 +64,10 @@ html(lang="en")
       var contributions = !{JSON.stringify(group.contributions)}
     script(src='/client.js')
   body(onunload='GUnload()')
-    #map
+    #container
+      #header
+        h1 Sydney Sound Map
+      #map
 """
 layout = jade.compile(layout_template)
 
