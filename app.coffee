@@ -1,9 +1,8 @@
 # todo: 
 # * throttle - etag?
-# * render js out
-#
-#
 # configure, pull in what we need etc
+
+# Go get what we need
 https = require('https')
 events = require('events')
 jade = require('jade')
@@ -36,8 +35,8 @@ class SoundcloudContributions extends events.EventEmitter
         @checkAgain(5)
         @emit('change', @contributions) if num != @contributions.length
     req.on 'error', (e) =>
-      console.error("[soundcloud api error] #{e}")
-      @checkAgain(10)
+      @emit('error', e)
+      @checkAgain(30)
   checkAgain: (minutes) ->
     clearTimeout(@timeout) if @timeout
     timer = =>
@@ -47,6 +46,8 @@ class SoundcloudContributions extends events.EventEmitter
 group = new SoundcloudContributions('28121', 'HAVZC0bHjrDNUbkqQSbqPg')
 group.on 'change', (contributions) ->
   console.info("now have #{contributions.length}")
+group.on 'error', (contributions) ->
+  console.info("error while hitting service: #{e}")
 
 layout_template = """
 !!! 5
@@ -54,7 +55,9 @@ html(lang="en")
   head
     title soundmapr
     link(rel='stylesheet', href='/style.css')
-    script(src='/socket.io.js')
+    script(src='/underscore-min.js')
+    script(src='/backbone.js')
+    script(src='/soundmanager2-nodebug-jsmin.js')
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js')
     script(src='http://maps.google.com/maps/api/js?sensor=false')
     script(type='text/javascript')
@@ -64,7 +67,6 @@ html(lang="en")
     #map
 """
 layout = jade.compile(layout_template)
-
 
 app.get '/', (request, response) ->
   response.send(layout.call(this, {group}))
