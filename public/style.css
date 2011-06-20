@@ -1,5 +1,5 @@
 html { height: 100% }
-body { height: 100%; margin: 0px; padding: 0px; background: #efeced;}
+body { height: 100%; margin: 0px; padding: 0px; background: #eeeeee;}
 #container{
   margin: auto;
   width: 1000px;
@@ -29,3 +29,31 @@ body { height: 100%; margin: 0px; padding: 0px; background: #efeced;}
 }
 
 h1 {margin: 0; padding: 0; font: 40px/48px 'GeoMedium', Arial, sans-serif;letter-spacing: 0;}
+
+a.title {
+  margin-bottom: 5px;
+  display: inline-block;
+  padding: 3px 3px 3px 25px;
+  min-height: 16px;
+  vertical-align: middle;
+  background-color: #333333;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px 3px 3px 25px;
+  width: 200px;
+  text-decoration: none;
+  font-weight: normal;
+  color: #ffffff !important;
+  background-image: url(/icon_play.png);
+  background-position: 3px 50%;
+  background-repeat: no-repeat;
+}
+
+.info{
+  font:13px/1.5 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif;
+  color: black;
+}
+.info a:visited, .info a{
+  color: black;
+}

@@ -71,7 +71,7 @@
   group.on('error', function(contributions) {
     return console.info("error while hitting service: " + e);
   });
-  layout_template = "!!! 5\nhtml(lang=\"en\")\n  head\n    title soundmapr\n    link(rel='stylesheet', href='/style.css')\n    script(src='/underscore-min.js')\n    script(src='/backbone.js')\n    script(src='/soundmanager2-nodebug-jsmin.js')\n    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js')\n    script(src='http://maps.google.com/maps/api/js?sensor=false')\n    script(type='text/javascript')\n      var contributions = !{JSON.stringify(group.contributions)}\n    script(src='/client.js')\n  body(onunload='GUnload()')\n    #container\n      #header\n        h1 Sydney Sound Map\n      #map";
+  layout_template = "!!! 5\nhtml(lang=\"en\")\n  head\n    title Sydney Sound Map\n    link(rel='stylesheet', href='/style.css')\n    script(src='/underscore-min.js')\n    script(src='/backbone.js')\n    script(src='/soundmanager2-nodebug-jsmin.js')\n    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js')\n    script(src='http://maps.google.com/maps/api/js?sensor=false')\n    script(type='text/javascript')\n      var contributions = !{JSON.stringify(group.contributions)}\n    script(src='/client.js')\n  body(onunload='GUnload()')\n    #container\n      #header\n        h1 Sydney Sound Map\n      #map";
   layout = jade.compile(layout_template);
   app.get('/', function(request, response) {
     return response.send(layout.call(this, {

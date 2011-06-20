@@ -53,7 +53,7 @@ layout_template = """
 !!! 5
 html(lang="en")
   head
-    title soundmapr
+    title Sydney Sound Map
     link(rel='stylesheet', href='/style.css')
     script(src='/underscore-min.js')
     script(src='/backbone.js')

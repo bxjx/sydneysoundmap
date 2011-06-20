@@ -1,5 +1,5 @@
 {
-  "name": "soundmapr",
+  "name": "sydneysoundmap",
   "version": "0.0.1-1",
   "dependencies": {
     "jade": "*",
